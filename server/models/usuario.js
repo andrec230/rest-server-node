@@ -40,6 +40,16 @@ let usuarioSchema = new Schema({
     }
 })
 
+// Vamos a modificar la impresión JSON del schema usuario para que no lleve
+// el password al retornar en el servicio
+usuarioSchema.methods.toJSON = function() { //Usamos función usual porque necesitamos el this
+    let user = this
+    let userObject = user.toObject()
+    delete userObject.password
+    
+    return userObject
+}
+
 usuarioSchema.plugin(uniqueValidator, {
     message:'{PATH} debe ser único'
 })
